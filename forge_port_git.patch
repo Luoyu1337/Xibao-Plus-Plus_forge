@@ -1,0 +1,200 @@
+diff --git a/Forge-1.20.1/settings.gradle b/Forge-1.20.1/settings.gradle
+new file mode 100644
+index 0000000..e69de29
+--- /dev/null
++++ b/Forge-1.20.1/settings.gradle
+@@ -0,0 +1,2 @@
++rootProject.name = 'Xibao-Plus-Plus-Forge'
++
++include ':Forge-1.20.1'
+\ No newline at end of file
+
+diff --git a/Forge-1.20.1/gradle.properties b/Forge-1.20.1/gradle.properties
+new file mode 100644
+index 0000000..e69de29
+--- /dev/null
++++ b/Forge-1.20.1/gradle.properties
+@@ -0,0 +1,7 @@
++org.gradle.jvmargs=-Xmx4G
++mod_version=1.0.0
++javaVersion=17
++# Set the Forge artifact coordinate below before building, e.g. net.minecraftforge:forge:1.20.1-45.1.0
++forge_version=net.minecraftforge:forge:1.20.1-45.1.0
++# mappings: use 'mojmap' for Mojang names
++mappings_channel=mojmap
++mappings_version=1.20.1
+\ No newline at end of file
+
+diff --git a/Forge-1.20.1/build.gradle b/Forge-1.20.1/build.gradle
+new file mode 100644
+index 0000000..e69de29
+--- /dev/null
++++ b/Forge-1.20.1/build.gradle
+@@ -0,0 +1,55 @@
++// ForgeGradle scaffold for Minecraft 1.20.1
++buildscript {
++    repositories {
++        mavenCentral()
++        maven { url = uri('https://maven.minecraftforge.net') }
++    }
++    dependencies {
++        // Please replace with the specific ForgeGradle coordinate if needed
++        classpath 'net.minecraftforge.gradle:ForgeGradle:5.1.+'
++    }
++}
++
++apply plugin: 'net.minecraftforge.gradle'
++apply plugin: 'maven-publish'
++
++group = 'top.gregtao'
++version = project.findProperty('mod_version') ?: '1.0.0'
++
++sourceCompatibility = JavaVersion.toVersion(javaVersion)
++targetCompatibility = JavaVersion.toVersion(javaVersion)
++
++minecraft {
++    // Use properties from gradle.properties — replace with concrete values if needed
++    mappings channel: project.findProperty('mappings_channel'), version: project.findProperty('mappings_version')
++    // Example: runs {
++    //   client {
++    //     workingDirectory project.file('run')
++    //   }
++    // }
++}
++
++repositories {
++    mavenCentral()
++    maven { url = uri('https://maven.minecraftforge.net') }
++}
++
++dependencies {
++    // Replace with concrete forge artifact, e.g. fg.deobf('net.minecraftforge:forge:1.20.1-45.1.0')
++    // implementation fg.deobf(project.findProperty('forge_version'))
++}
++
++tasks.withType(JavaCompile) {
++    options.encoding = 'UTF-8'
++}
++
++// This build file is scaffold: you must set forge_version (gradle.properties) to a real Forge coordinate
++// and ensure ForgeGradle/mappings versions match the desired Forge release before running ./gradlew build.
+\ No newline at end of file
+
+diff --git a/Forge-1.20.1/src/main/resources/META-INF/mods.toml b/Forge-1.20.1/src/main/resources/META-INF/mods.toml
+new file mode 100644
+index 0000000..e69de29
+--- /dev/null
++++ b/Forge-1.20.1/src/main/resources/META-INF/mods.toml
+@@ -0,0 +1,11 @@
++modLoader = "javafml"
++license = "MIT"
++
++[[mods]]
++modId = "xibaopp"
++version = "1.0.0"
++displayName = "Xibao Plus Plus (Forge)"
++credits = "移植自 Fabric 版"
++authors = ["原作者"]
++description = "'''\nForge 1.20.1 移植版\n'''"
+\ No newline at end of file
+
+diff --git a/Forge-1.20.1/src/main/java/top/gregtao/xibaopp/XibaoForgeMain.java b/Forge-1.20.1/src/main/java/top/gregtao/xibaopp/XibaoForgeMain.java
+new file mode 100644
+index 0000000..e69de29
+--- /dev/null
++++ b/Forge-1.20.1/src/main/java/top/gregtao/xibaopp/XibaoForgeMain.java
+@@ -0,0 +1,25 @@
++package top.gregtao.xibaopp;
++
++import net.minecraftforge.fml.common.Mod;
++import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
++import net.minecraftforge.eventbus.api.IEventBus;
++import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
++
++@Mod("xibaopp")
++public class XibaoForgeMain {
++    public XibaoForgeMain() {
++        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
++        bus.addListener(this::clientSetup);
++    }
++
++    private void clientSetup(final FMLClientSetupEvent event) {
++        // 在此注册客户端相关初始化（声音、GUI、渲染器等）
++    }
++}
+\ No newline at end of file
+
+diff --git a/Forge-1.20.1/src/main/resources/mixins.xibaopp.json b/Forge-1.20.1/src/main/resources/mixins.xibaopp.json
+new file mode 100644
+index 0000000..e69de29
+--- /dev/null
++++ b/Forge-1.20.1/src/main/resources/mixins.xibaopp.json
+@@ -0,0 +1,12 @@
++{
++  "required": true,
++  "minVersion": "0.8",
++  "package": "top.gregtao.xibaopp.mixin",
++  "compatibilityLevel": "JAVA_17",
++  "refmap": "refmap.xibaopp.json",
++  "mixins": [
++    "ExampleMixin"
++  ]
++}
+\ No newline at end of file
+
+diff --git a/.github/workflows/forge-build.yml b/.github/workflows/forge-build.yml
+new file mode 100644
+index 0000000..e69de29
+--- /dev/null
++++ b/.github/workflows/forge-build.yml
+@@ -0,0 +1,30 @@
++name: Forge Build
++on:
++  push:
++    branches: [ "forge-1.20.1-port" ]
++  pull_request:
++    branches: [ main ]
++
++jobs:
++  build:
++    runs-on: ubuntu-latest
++    permissions:
++      contents: read
++      packages: write
++      id-token: write
++    steps:
++      - uses: actions/checkout@v4
++      - name: Set up Java 17
++        uses: actions/setup-java@v4
++        with:
++          distribution: temurin
++          java-version: '17'
++      - name: Grant execute permission for gradlew
++        run: chmod +x gradlew || true
++      - name: Build
++        run: ./gradlew :Forge-1.20.1:build --no-daemon
++      - name: Upload artifact
++        uses: actions/upload-artifact@v4
++        with:
++          name: forge-jar
++          path: Forge-1.20.1/build/libs/*.jar
+\ No newline at end of file
+
+diff --git a/README.forge-migration.md b/README.forge-migration.md
+new file mode 100644
+index 0000000..e69de29
+--- /dev/null
++++ b/README.forge-migration.md
+@@ -0,0 +1,15 @@
++说明：此补丁为 Forge 移植骨架。使用方法：
++1) 在本地仓库根运行：
++   git checkout -b forge-1.20.1-port
++   # 将本目录下的 Forge-1.20.1 文件复制或直接把这些文件添加到仓库
++2) 根据注释替换 build.gradle 中的 ForgeGradle/mappings/forge 具体版本号
++3) 在项目根运行 gradle wrapper（如果未包含 wrapper）：
++   gradle wrapper --gradle-version 8.3
++4) 运行 ./gradlew :Forge-1.20.1:build
++
++注意：mixins 需要把目标名从 Yarn 映射调整为 Mojmap 名称；Fabric API 依赖需替换或实现兼容逻辑。
++
+\ No newline at end of file

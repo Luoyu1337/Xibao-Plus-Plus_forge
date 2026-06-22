@@ -1,0 +1,8 @@
+﻿# Ignore gradle caches and distribution zips
+.gradle/
+**/.gradle/
+*.zip
+gradle-*/
+Forge-1.20.1/build/
+node_modules/
+!xibaopp-1.0.0.jar

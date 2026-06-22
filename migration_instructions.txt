@@ -1,0 +1,30 @@
+Migration & local-build instructions (concise):
+
+1) Prepare
+   - Unzip forge_port_files.zip into your repository root or a working copy.
+   - Create a branch: git checkout -b forge-1.20.1-port
+
+2) Confirm versions
+   - Edit Forge-1.20.1/gradle.properties and set forge_version to a real Forge coordinate (example used: net.minecraftforge:forge:1.20.1-47.1.0).
+   - Ensure mappings_channel=mojmap and mappings_version matches (1.20.1).
+
+3) Scan for Fabric API usage and mixins
+   - Run PowerShell: .\scripts\scan_for_fabric_and_mixins.ps1
+   - Review fabric_usage.txt and mixins_list.txt. Replace Fabric API usages or mark for manual rewrite.
+
+4) Generate Gradle wrapper and build
+   - If you have system gradle: gradle wrapper --gradle-version 8.3
+   - Otherwise create wrapper via your IDE or install gradle.
+   - Run build and capture logs: .\scripts\build_and_collect_logs.ps1 -ProjectPath . -ModulePath 'Forge-1.20.1' -LogFile build_log.txt
+
+5) Common failures & fixes
+   - Dependency download fails: check forge_version, network access to maven.minecraftforge.net.
+   - Mixin errors: original mixin targets were written for Yarn. Update mixins.json and @Mixin target names to Mojmap names. Use MCP/Mojmap mappings reference or IDE mapping tools.
+   - Fabric API references: search for net.fabricmc or net.fabricmc.fabric.api and replace calls with Forge equivalents or implement conditional compile abstractions.
+   - Java version: ensure Java 17 (java -version).
+
+6) After build success
+   - Artifact located at: Forge-1.20.1/build/libs/*.jar
+   - Create a release or upload artifact to GitHub manually, or let CI (workflow) upload it on push to your branch.
+
+If you run these and paste build_log.txt here, I will parse errors and generate targeted code patches (mixins rename, API replacements, gradle corrections) and iterate until build succeeds.

@@ -1,0 +1,156 @@
+*** Begin Patch
+*** Add File: Forge-1.20.1/settings.gradle
++rootProject.name = 'Xibao-Plus-Plus-Forge'
++
+*** End Patch
+*** Begin Patch
+*** Add File: Forge-1.20.1/gradle.properties
++org.gradle.jvmargs=-Xmx4G
++mavenCentralUsername=
++mod_version=1.0.0
++javaVersion=17
++
+*** End Patch
+*** Begin Patch
+*** Add File: Forge-1.20.1/build.gradle
++// ForgeGradle skeleton — replace ForgeGradle/mappings versions with the concrete versions for Forge 1.20.1
++buildscript {
++    repositories {
++        mavenCentral()
++        maven { url = uri('https://maven.minecraftforge.net') }
++    }
++    dependencies {
++        // Replace with the correct ForgeGradle coordinate for 1.20.1 (example: net.minecraftforge.gradle:ForgeGradle:5.1.+)
++        classpath 'net.minecraftforge.gradle:ForgeGradle:5.1.+'
++    }
++}
++
++apply plugin: 'net.minecraftforge.gradle'
++apply plugin: 'maven-publish'
++
++group = 'top.gregtao'
++version = project.findProperty('mod_version') ?: '1.0.0'
++
++sourceCompatibility = JavaVersion.toVersion(javaVersion)
++targetCompatibility = JavaVersion.toVersion(javaVersion)
++
++minecraft {
++    // Configure the mappings and minecraft version. Adjust to the exact Forge artifact/version for 1.20.1.
++    // Example placeholders (replace before building):
++    // mappings channel: 'official', version: '1.20.1' or use mojmap mappings as required
++}
++
++repositories {
++    mavenCentral()
++    maven { url = uri('https://maven.minecraftforge.net') }
++}
++
++dependencies {
++    // Add Forge dependency placeholder (replace with the correct 'forge' coordinate)
++    // implementation fg.deobf('net.minecraftforge:forge:1.20.1-xx.xx.xx')
++}
++
++// Mixin and remapping configuration placeholder
++// Ensure mixin refmap and remapper are configured according to the ForgeGradle docs for your selected version
++
++tasks.withType(JavaCompile) {
++    options.encoding = 'UTF-8'
++}
++
+*** End Patch
+*** Begin Patch
+*** Add File: Forge-1.20.1/src/main/resources/META-INF/mods.toml
++modLoader = "javafml"
++license = "MIT"
++
++[[mods]]
++modId = "xibaopp"
++version = "1.0.0"
++displayName = "Xibao Plus Plus (Forge)"
++credits = "移植自 Fabric 版"
++authors = ["原作者"]
++description = "'''
++Forge 1.20.1 移植版
++'''"
++
+*** End Patch
+*** Begin Patch
+*** Add File: Forge-1.20.1/src/main/java/top/gregtao/xibaopp/XibaoForgeMain.java
++package top.gregtao.xibaopp;
++
++import net.minecraftforge.fml.common.Mod;
++import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
++import net.minecraftforge.eventbus.api.IEventBus;
++import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
++
++@Mod("xibaopp")
++public class XibaoForgeMain {
++    public XibaoForgeMain() {
++        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
++        bus.addListener(this::clientSetup);
++    }
++
++    private void clientSetup(final FMLClientSetupEvent event) {
++        // 在此注册客户端相关初始化（声音、GUI、渲染器等）
++    }
++}
++
+*** End Patch
+*** Begin Patch
+*** Add File: Forge-1.20.1/src/main/resources/mixins.xibaopp.json
++{
++  "required": true,
++  "minVersion": "0.8",
++  "package": "top.gregtao.xibaopp.mixin",
++  "compatibilityLevel": "JAVA_17",
++  "refmap": "refmap.xibaopp.json",
++  "mixins": [
++    "ExampleMixin"
++  ]
++}
++
+*** End Patch
+*** Begin Patch
+*** Add File: .github/workflows/forge-build.yml
++name: Forge Build
++on:
++  push:
++    branches: [ "forge-1.20.1-port" ]
++  pull_request:
++    branches: [ main ]
++
++jobs:
++  build:
++    runs-on: ubuntu-latest
++    steps:
++      - uses: actions/checkout@v4
++      - name: Set up Java 17
++        uses: actions/setup-java@v4
++        with:
++          distribution: temurin
++          java-version: '17'
++      - name: Grant execute permission for gradlew
++        run: chmod +x gradlew || true
++      - name: Build
++        run: ./gradlew :Forge-1.20.1:build --no-daemon
++      - name: Upload artifact
++        uses: actions/upload-artifact@v4
++        with:
++          name: forge-jar
++          path: Forge-1.20.1/build/libs/*.jar
++
+*** End Patch
+*** Begin Patch
+*** Add File: README.forge-migration.md
++说明：此补丁为 Forge 移植骨架。使用方法：
++1) 在本地仓库根运行：
++   git checkout -b forge-1.20.1-port
++   git apply ../forge_port_patch.diff  # 或直接把文件复制到对应路径
++2) 根据注释替换 build.gradle 中的 ForgeGradle/mappings/forge 具体版本号
++3) 在项目根运行 gradle wrapper（如果未包含 wrapper）：
++   gradle wrapper --gradle-version 8.3
++4) 运行 ./gradlew :Forge-1.20.1:build
++
++注意：mixins 需要把目标名从 Yarn 映射调整为 Mojmap 名称；Fabric API 依赖需替换或实现兼容逻辑。
++
+*** End Patch

@@ -1,0 +1,43 @@
+Initialized native services in: C:\Users\40748\.gradle\native
+Initialized jansi services in: C:\Users\40748\.gradle\native
+Received JVM installation metadata from 'C:\Program Files\Java\jdk-17': {JAVA_HOME=C:\Program Files\Java\jdk-17, JAVA_VERSION=17.0.12, JAVA_VENDOR=Oracle Corporation, RUNTIME_NAME=Java(TM) SE Runtime Environment, RUNTIME_VERSION=17.0.12+8-LTS-286, VM_NAME=Java HotSpot(TM) 64-Bit Server VM, VM_VERSION=17.0.12+8-LTS-286, VM_VENDOR=Oracle Corporation, OS_ARCH=amd64}
+Checking if the launcher JVM can be re-used for build. To be re-used, the launcher JVM needs to match the parameters required for the build process: --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.invoke=ALL-UNNAMED --add-opens=java.prefs/java.util.prefs=ALL-UNNAMED --add-opens=java.base/java.nio.charset=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED -Xmx4G -Dfile.encoding=GBK -Duser.country=CN -Duser.language=zh -Duser.variant
+To honour the JVM settings for this build a single-use Daemon process will be forked. See https://docs.gradle.org/7.6/userguide/gradle_daemon.html#sec:disabling_the_daemon.
+Starting process 'Gradle build daemon'. Working directory: C:\Users\40748\.gradle\daemon\7.6 Command: C:\Program Files\Java\jdk-17\bin\java.exe --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.invoke=ALL-UNNAMED --add-opens=java.prefs/java.util.prefs=ALL-UNNAMED --add-opens=java.base/java.nio.charset=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED -Xmx4G -Dfile.encoding=GBK -Duser.country=CN -Duser.language=zh -Duser.variant -cp C:\Users\40748\gradle-7.6\lib\gradle-launcher-7.6.jar org.gradle.launcher.daemon.bootstrap.GradleDaemon 7.6
+Successfully started process 'Gradle build daemon'
+An attempt to start the daemon took 2.894 secs.
+The client will now receive all logging from the daemon (pid: 138252). The daemon log file: C:\Users\40748\.gradle\daemon\7.6\daemon-138252.out.log
+Closing daemon's stdin at end of input.
+The daemon will no longer process any standard input.
+Daemon will be stopped at the end of the build 
+Using 32 worker leases.
+Received JVM installation metadata from 'C:\Program Files\Java\jdk-17': {JAVA_HOME=C:\Program Files\Java\jdk-17, JAVA_VERSION=17.0.12, JAVA_VENDOR=Oracle Corporation, RUNTIME_NAME=Java(TM) SE Runtime Environment, RUNTIME_VERSION=17.0.12+8-LTS-286, VM_NAME=Java HotSpot(TM) 64-Bit Server VM, VM_VERSION=17.0.12+8-LTS-286, VM_VENDOR=Oracle Corporation, OS_ARCH=amd64}
+Watching the file system is configured to be enabled if available
+Now considering [C:\Users\40748\Forge-1.20.1] as hierarchies to watch
+File system watching is active
+Starting Build
+Settings evaluated using settings file 'C:\Users\40748\Forge-1.20.1\settings.gradle'.
+Projects loaded. Root project using build file 'C:\Users\40748\Forge-1.20.1\build.gradle'.
+Included projects: [root project 'Xibao-Plus-Plus-Forge', project ':Forge-1.20.1']
+
+> Configure project :
+Evaluating root project 'Xibao-Plus-Plus-Forge' using build file 'C:\Users\40748\Forge-1.20.1\build.gradle'.
+Compiling build file 'C:\Users\40748\Forge-1.20.1\build.gradle' using SubsetScriptTransformer.
+Compiling build file 'C:\Users\40748\Forge-1.20.1\build.gradle' using BuildScriptTransformer.
+Creating reobfuscation task for JarJar task: jarJar
+Watched directory hierarchies: []
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+A problem occurred configuring root project 'Xibao-Plus-Plus-Forge'.
+> Missing 'minecraft' dependency.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --debug option to get more log output.
+> Run with --scan to get full insights.
+
+* Get more help at https://help.gradle.org
+
+BUILD FAILED in 13s
