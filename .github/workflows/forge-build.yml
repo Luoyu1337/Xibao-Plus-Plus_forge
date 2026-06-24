@@ -20,9 +20,10 @@ jobs:
           distribution: temurin
           java-version: '17'
       - name: Grant execute permission for gradlew
-        run: chmod +x gradlew || true
+        run: chmod +x Forge-1.20.1/gradlew || true
       - name: Build
-        run: ./gradlew :Forge-1.20.1:build --no-daemon
+        working-directory: Forge-1.20.1
+        run: ./gradlew build --no-daemon
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
