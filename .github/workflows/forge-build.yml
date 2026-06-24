@@ -13,22 +13,23 @@ jobs:
       packages: write
       id-token: write
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up Java 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
+      - name: Checkout repo with git
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH=${GITHUB_REF#refs/heads/}
+          git clone --depth 1 --branch "$BRANCH" "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" repo
+          rsync -a repo/ .
+      - name: Install Java 17 (OpenJDK)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openjdk-17-jdk
+          echo "JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64" >> $GITHUB_ENV
       - name: Grant execute permission for gradlew
         run: chmod +x Forge-1.20.1/gradlew || true
       - name: Build
         working-directory: Forge-1.20.1
         run: ./gradlew build --no-daemon
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: forge-jar
-          path: Forge-1.20.1/build/libs/*.jar
       - name: Install GitHub CLI
         run: |
           if ! command -v gh >/dev/null; then
