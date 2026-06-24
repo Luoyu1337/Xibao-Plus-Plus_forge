@@ -29,23 +29,19 @@ jobs:
         with:
           name: forge-jar
           path: Forge-1.20.1/build/libs/*.jar
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
+      - name: Install GitHub CLI
+        run: |
+          if ! command -v gh >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y gh
+          fi
+      - name: Authenticate gh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: forge-1.20.1-port-${{ github.sha }}
-          release_name: forge-1.20.1-port-${{ github.sha }}
-          body: Automated build from GitHub Actions
-          draft: false
-          prerelease: false
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+      - name: Create release with gh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: Forge-1.20.1/build/libs/*.jar
-          asset_name: xibao-forge-${{ github.sha }}.jar
-          asset_content_type: application/java-archive
+        run: |
+          TAG=forge-1.20.1-port-${GITHUB_SHA:0:7}
+          gh release create "$TAG" Forge-1.20.1/build/libs/*.jar --title "$TAG" --notes "Automated build from GitHub Actions"
